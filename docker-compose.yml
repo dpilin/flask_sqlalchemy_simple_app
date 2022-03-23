@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  postgresql-master:
+    image: docker.io/bitnami/postgresql:14
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=${SIMPLE_APP_DB_REPLICATION_USER}
+      - POSTGRESQL_REPLICATION_PASSWORD=${SIMPLE_APP_DB_REPLICATION_PASSWORD}
+      - POSTGRESQL_USERNAME=${SIMPLE_APP_DB_USER}
+      - POSTGRESQL_PASSWORD=${SIMPLE_APP_DB_PASSWORD}
+      - POSTGRESQL_DATABASE=${SIMPLE_APP_DB_NAME}
+      - ALLOW_EMPTY_PASSWORD=yes
+  postgresql-replica:
+    image: docker.io/bitnami/postgresql:14
+    depends_on:
+      - postgresql-master
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=${SIMPLE_APP_DB_REPLICATION_USER}
+      - POSTGRESQL_REPLICATION_PASSWORD=${SIMPLE_APP_DB_REPLICATION_PASSWORD}
+      - POSTGRESQL_MASTER_HOST=postgresql-master
+      - POSTGRESQL_PASSWORD=${SIMPLE_APP_DB_PASSWORD}
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+      - ALLOW_EMPTY_PASSWORD=yes
+  bytemark-smtp-server:
+    image: bytemark/smtp
+  simple-ban-app:
+    image: simplebanapp:1
+    build: .
+    depends_on:
+      - postgresql-master
+      - postgresql-replica
+      - bytemark-smtp-server
+    environment:
+      - SIMPLE_APP_DB_HOST=postgresql-master
+      - SIMPLE_APP_DB_PORT=${SIMPLE_APP_DB_PORT:-5432}
+      - SIMPLE_APP_DB_NAME=${SIMPLE_APP_DB_NAME}
+      - SIMPLE_APP_DB_USER=${SIMPLE_APP_DB_USER}
+      - SIMPLE_APP_DB_PASSWORD=${SIMPLE_APP_DB_PASSWORD}
+      - SIMPLE_APP_SMTP_SERVER=bytemark-smtp-server
+    ports:
+      - "5000:5000"
+
+
+

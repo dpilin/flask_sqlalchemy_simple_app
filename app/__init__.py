@@ -24,7 +24,7 @@ def set_db_smtp_urls(app):
         app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     else:
         db_host = getenv("SIMPLE_APP_DB_HOST")
-        db_port = getenv("SIMPLE_APP_DB_PORT", 5432)
+        db_port = getenv("SIMPLE_APP_DB_PORT")
         db_name = getenv("SIMPLE_APP_DB_NAME")
         db_user = getenv("SIMPLE_APP_DB_USER")
         db_password = getenv("SIMPLE_APP_DB_PASSWORD")

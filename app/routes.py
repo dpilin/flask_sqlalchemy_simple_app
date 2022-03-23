@@ -4,6 +4,7 @@ from flask import Response, request, current_app
 from json import dumps
 from datetime import datetime
 from email.mime.text import MIMEText
+from sqlalchemy.exc import OperationalError
 
 def response(code, data):
     """
@@ -80,4 +81,19 @@ def ban_visitor_of_the_page():
         current_app.logger.debug("The record was successfully saved in the database")
         send_email_with_banned_ip(record.ip, record.timestamp, current_app)
         return response(444, dumps({"result": f"From now on your IP address ({visitor_ip}) is banned"}))
-    
+
+@simple_ban_app.route("/healthcheck", methods=["GET"])
+def healthcheck():
+    """
+    A technical endpoint for the service's health checking
+    """
+    if BlockList.query.filter_by(ip=request.remote_addr).all():
+        return response(403, dumps({"result": "Access from your IP address is forbidden"}))
+
+    current_app.logger.debug(f"Received an incoming request to {str(request.url_rule)}")
+    try:
+        records_qty = len(BlockList.query.all())
+        return response(200, dumps({"result": f"{records_qty} record(s) is (are) in the DB at the moment"}))
+    except OperationalError:
+        return response(500, dumps({"result": "Internal Server Error"}))
+

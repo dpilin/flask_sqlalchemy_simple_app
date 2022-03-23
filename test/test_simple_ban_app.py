@@ -59,6 +59,18 @@ class SimpleBanAppTestCase(TestCase):
         response = self.test_client.get("/blacklisted")
         self.assertEqual(response.status_code, 403)
     
+    def test_healtcheck_available(self):
+        response = self.test_client.get("/healthcheck")
+        self.assertEqual(response.status_code, 200)
+    
+    def test_healtcheck_unavailable_from_banned_ip(self):
+        # First of all, banning or current IP
+        response = self.test_client.get("/blacklisted")
+        self.assertEqual(response.status_code, 444)
+        # Checking that access to /healthcheck is forbidden
+        response = self.test_client.get("/healthcheck")
+        self.assertEqual(response.status_code, 403)
+    
     def tearDown(self):
         db.session.remove()
         db.drop_all()
