@@ -1,3 +1,5 @@
+#!/bin/python3
+
 from logging import getLogger, DEBUG, INFO
 from time import sleep
 from app import create_app, db
