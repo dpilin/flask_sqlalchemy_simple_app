@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.7"
 services:
   postgresql-master:
     image: docker.io/bitnami/postgresql:14
@@ -10,6 +10,8 @@ services:
       - POSTGRESQL_PASSWORD=${SIMPLE_APP_DB_PASSWORD}
       - POSTGRESQL_DATABASE=${SIMPLE_APP_DB_NAME}
       - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "5432:5432"
   postgresql-replica:
     image: docker.io/bitnami/postgresql:14
     depends_on:
@@ -21,6 +23,8 @@ services:
       - POSTGRESQL_MASTER_HOST=postgresql-master
       - POSTGRESQL_PASSWORD=${SIMPLE_APP_DB_PASSWORD}
       - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "5433:5432"
   bytemark-smtp-server:
     image: bytemark/smtp
   simple-ban-app:

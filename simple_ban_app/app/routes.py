@@ -31,8 +31,7 @@ def send_email_with_banned_ip(ip, timestamp, app):
     msg["To"] = "test@domain.com"
     app.logger.debug(f"Email was formed, here is its content:\n\n{msg.as_string()}")
 
-    app.config["SMTP_CLIENT"].sendmail("simple_ban_app@python", "test@domain.com", msg.as_string())
-    app.config["SMTP_CLIENT"].close() 
+    app.config["SMTP_CLIENT"].sendmail("simple_ban_app@python", "test@domain.com", msg.as_string()) 
 
 
 @simple_ban_app.route("/", methods=["GET"])
