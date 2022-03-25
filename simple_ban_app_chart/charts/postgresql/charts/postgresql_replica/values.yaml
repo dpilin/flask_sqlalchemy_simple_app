@@ -1,0 +1,13 @@
+replicaCount: 1
+
+appName: postgres-replica
+
+app:
+  replication_mode: slave
+  replication_user: simplereplicauser
+  master_host: postgres-master
+
+image:
+  repository: docker.io/bitnami/postgresql
+  tag: 14
+  pullPolicy: IfNotPresent

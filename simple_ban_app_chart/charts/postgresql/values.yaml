@@ -1,0 +1,17 @@
+replicaCount: 1
+
+appName: postgres-master
+
+app:
+  replication_mode: master
+  replication_user: simplereplicauser
+  username: simpleuser
+  db_name: simpledb
+
+image:
+  repository: docker.io/bitnami/postgresql
+  tag: 14
+  pullPolicy: IfNotPresent
+
+service:
+  port: 5432

@@ -1,0 +1,19 @@
+replicaCount: 1
+
+appName: simple-ban-app
+
+app:
+  db_host: postgres-master
+  db_port: 5432
+  db_name: simpledb
+  db_user: simpleuser
+  smtp_server: bytemark-smtp-server
+
+image:
+  repository: simplebanapp
+  tag: 1
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 5000

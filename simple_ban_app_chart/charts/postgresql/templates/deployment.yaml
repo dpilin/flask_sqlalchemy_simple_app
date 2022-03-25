@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      initContainers:
+        - name: data-chmod-init
+          image: bash:5
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/usr/local/bin/bash","-c","mkdir -p /bitnami/postgresql/data && chown 700 /bitnami/postgresql/data && chown -R 1001:1001 /bitnami"]
+          volumeMounts:
+            - mountPath: /bitnami/postgresql
+              name: pgdata-master
+      containers:
+        - name: {{ .Values.appName }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.appName }}-config
+            - secretRef:
+                name: {{ .Values.appName }}-secret
+          volumeMounts:
+            - mountPath: /bitnami/postgresql
+              name: pgdata-master
+      volumes:
+        - name: pgdata-master
+          persistentVolumeClaim:
+            claimName: pgdata-master-pvc

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.appName }}-config
+  labels:
+    app: {{ .Values.appName }}
+data:
+  POSTGRESQL_REPLICATION_MODE: {{ .Values.app.replication_mode }}
+  POSTGRESQL_REPLICATION_USER: {{ .Values.app.replication_user }}
+  POSTGRESQL_USERNAME: {{ .Values.app.username }}
+  POSTGRESQL_DATABASE: {{ .Values.app.db_name }}
+

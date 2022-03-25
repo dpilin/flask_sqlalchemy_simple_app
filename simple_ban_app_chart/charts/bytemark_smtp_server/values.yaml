@@ -1,0 +1,11 @@
+replicaCount: 1
+
+appName: bytemark-smtp-server
+
+image:
+  repository: bytemark/smtp
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  port: 25

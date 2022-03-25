@@ -20,7 +20,6 @@ services:
       - POSTGRESQL_REPLICATION_PASSWORD=${SIMPLE_APP_DB_REPLICATION_PASSWORD}
       - POSTGRESQL_MASTER_HOST=postgresql-master
       - POSTGRESQL_PASSWORD=${SIMPLE_APP_DB_PASSWORD}
-      - POSTGRESQL_MASTER_PORT_NUMBER=5432
       - ALLOW_EMPTY_PASSWORD=yes
   bytemark-smtp-server:
     image: bytemark/smtp
