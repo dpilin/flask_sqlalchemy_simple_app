@@ -1,4 +1,4 @@
-# Flask SQLAlchemy Simple App (including Helm chart for k8s deployment)
+# Flask SQLAlchemy Simple App
 
 It is an example of simple web-backend app which is connected to the PostgreSQL DB via Flask_SQLAlchemy library. The app was created as a test assignment for DevOps Engineer position.
 It is bundled with docker-compose file for local deployment and a Helm chart for k8s one.
