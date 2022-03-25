@@ -2,6 +2,8 @@ replicaCount: 1
 
 appName: bytemark-smtp-server
 
+registryCredentialsSecret: regcred
+
 image:
   repository: bytemark/smtp
   tag: latest

@@ -87,7 +87,8 @@ def healthcheck():
     """
     A technical endpoint for the service's health checking
     """
-    if BlockList.query.filter_by(ip=request.remote_addr).all():
+    is_automated_check = True if request.headers.get("requestor") == "automated_healthcheck" else False
+    if not is_automated_check and BlockList.query.filter_by(ip=request.remote_addr).all():
         return response(403, dumps({"result": "Access from your IP address is forbidden"}))
 
     current_app.logger.debug(f"Received an incoming request to {str(request.url_rule)}")

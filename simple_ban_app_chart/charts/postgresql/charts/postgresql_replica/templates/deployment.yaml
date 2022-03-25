@@ -12,6 +12,8 @@ spec:
       labels:
         app: {{ .Values.appName }}
     spec:
+      imagePullSecrets:
+        - name: {{ .Values.registryCredentialsSecret }}
       initContainers:
         - name: data-chmod-init
           image: bash:5

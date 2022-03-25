@@ -12,14 +12,26 @@ spec:
       labels:
         app: {{ .Values.appName }}
     spec:
+      imagePullSecrets:
+        - name: {{ .Values.registryCredentialsSecret }}
       containers:
         - name: {{ .Values.appName }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 5000
+            - name: api
+              containerPort: 5000
           envFrom:
             - configMapRef:
                 name: {{ .Values.appName }}-config
             - secretRef:
                 name: {{ .Values.appName }}-secret
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: api
+              httpHeaders:
+                - name: requestor
+                  value: automated_healthcheck
+            initialDelaySeconds: 30
+            periodSeconds: 10

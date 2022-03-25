@@ -2,6 +2,8 @@ replicaCount: 1
 
 appName: simple-ban-app
 
+registryCredentialsSecret: regcred
+
 app:
   db_host: postgres-master
   db_port: 5432
@@ -10,7 +12,7 @@ app:
   smtp_server: bytemark-smtp-server
 
 image:
-  repository: simplebanapp
+  repository: docker.io/library/simplebanapp
   tag: 1
   pullPolicy: IfNotPresent
 

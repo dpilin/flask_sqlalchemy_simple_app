@@ -2,6 +2,8 @@ replicaCount: 1
 
 appName: postgres-master
 
+registryCredentialsSecret: regcred
+
 app:
   replication_mode: master
   replication_user: simplereplicauser

@@ -24,7 +24,7 @@ services:
   bytemark-smtp-server:
     image: bytemark/smtp
   simple-ban-app:
-    image: simplebanapp:latest
+    image: simplebanapp:1
     build: ./simple_ban_app
     depends_on:
       - postgresql-master
